@@ -23,7 +23,7 @@ def init():
         "default_bucket": ""
     }
 
-    with open("config.json", "w") as f_out:
+    with open("s3t/config.json", "w") as f_out:
         json.dump(config, f_out)
 
     return config
