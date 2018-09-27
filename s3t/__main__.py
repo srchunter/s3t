@@ -26,6 +26,7 @@ def parse_args():
     parser.add_argument("-v", "--version", action="version", version=VERSION)
     parser.add_argument("-b", "--bucket", default=conf["default_bucket"], help="Use specified bucket")
     parser.add_argument("--creds", type=str, nargs="?", const="?", help="Run the tool with credentials")
+    parser.add_argument("-n", "--nosize", action="store_true", default=False, help="Don't show size of files")
     
     args = parser.parse_args()
 
@@ -85,7 +86,7 @@ def main():
         exit(0)
     
     if args.list:
-        s3operation.list_keys(args.bucket, args.list, all=args.all, access_key_id=args.access_key_id, access_key=args.access_key)
+        s3operation.list_keys(args.bucket, args.list, all=args.all, access_key_id=args.access_key_id, access_key=args.access_key, showSize=(not args.nosize))
     elif args.download:
         s3operation.download(args.bucket, args.download, filename=args.key)
     elif args.copy:

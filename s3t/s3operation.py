@@ -5,8 +5,11 @@ import datetime
 import os
 import threading
 
-def print_key(key):
-    print(key['Key'], "\t\t", str(round(key["Size"] / 1024 / 1024, 3)) + "mb")
+def print_key(key, showSize=True):
+    if showSize:
+        print(key['Key'], "\t\t", str(round(key["Size"] / 1024 / 1024, 3)) + "mb")
+    else:
+        print(key['Key'])
 
 class ProgressPercentageUp(object):
     def __init__(self, filename):
@@ -42,7 +45,7 @@ class ProgressPercentageDown(object):
                     percentage))
             sys.stdout.flush()
 
-def list_keys(bucket, prefix, all=False, access_key_id=None, access_key=None):
+def list_keys(bucket, prefix, all=False, access_key_id=None, access_key=None, showSize=True):
     
     conn = boto3.client('s3')
 
@@ -55,7 +58,7 @@ def list_keys(bucket, prefix, all=False, access_key_id=None, access_key=None):
     try:
         key_list = conn.list_objects(Bucket=bucket, Prefix=prefix)['Contents']
         for key in key_list:
-            print_key(key)
+            print_key(key, showSize=showSize)
             last_key = key['Key']
     except KeyError:
         print("No results found with prefix '" + prefix + "'")
@@ -75,7 +78,7 @@ def list_keys(bucket, prefix, all=False, access_key_id=None, access_key=None):
             sys.exit(0)
         
         for key in key_list:
-                print_key(key)
+                print_key(key, showSize=showSize)
                 last_key = key['Key']
 
 
