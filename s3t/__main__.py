@@ -88,7 +88,7 @@ def main():
     if args.list:
         s3operation.list_keys(args.bucket, args.list, all=args.all, access_key_id=args.access_key_id, access_key=args.access_key, showSize=(not args.nosize))
     elif args.download:
-        s3operation.download(args.bucket, args.download, filename=args.key)
+        s3operation.download(args.bucket, args.download, filename=args.key, showProgress=(not args.nosize))
     elif args.copy:
         s3operation.copy(args.bucket, args.copy, args.target, target_key=args.key)
     elif args.upload:

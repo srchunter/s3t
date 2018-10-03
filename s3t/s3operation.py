@@ -82,7 +82,7 @@ def list_keys(bucket, prefix, all=False, access_key_id=None, access_key=None, sh
                 last_key = key['Key']
 
 
-def download(bucket, key, filename=None):
+def download(bucket, key, filename=None, showProgress=True):
    
     client = boto3.client('s3')
     
@@ -90,7 +90,10 @@ def download(bucket, key, filename=None):
         filename = os.path.basename(key)
 
     try:
-        client.download_file(bucket, key, filename, Callback=ProgressPercentageDown(client, bucket, key))
+        if showProgress:
+            client.download_file(bucket, key, filename, Callback=ProgressPercentageDown(client, bucket, key))
+        else:
+            client.download_file(bucket, key, filename)
         print("\n" + bucket, "-", key, "finished Download")
     except botocore.exceptions.ClientError as e:
         print("S3 Error:", e)
